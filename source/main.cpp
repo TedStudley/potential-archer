@@ -2,6 +2,7 @@
 
 #include <Geometry/ShapeFunction.h>
 #include <Simulation/Advection.h>
+#include <Simulation/Diffusion.h>
 
 int main() {
 	int n = GRID_SIZE;
@@ -16,7 +17,8 @@ int main() {
 
 	Eigen::VectorXd exactSoln = heatVect;
 
-    frommVanLeer(heatVect, sigma, end_step);
+    frommVanLeer(heatVect, sigma);
+    crankNicholson(heatVect, sigma);
 
 	std::cout << heatVect << std::endl;
 

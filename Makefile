@@ -1,12 +1,12 @@
 # C/C++ compiler
 CC			:=	g++
 # C/C++ compiler flags
-CFLAGS		:=	-Wall -c -Iinclude
+CFLAGS		+=	-Wall -c -Iinclude
 
 # C/C++ linker
 LD			:= 	g++
 # C/C++ linker flags
-LDFLAGS		:=
+LDFLAGS		+=
 
 
 # Source modules
@@ -34,7 +34,7 @@ endef
 
 .PHONY: all checkdirs clean
 
-all: clean checkdirs $(TARGET)
+all: checkdirs $(TARGET)
 
 $(OBJ_DIR)/%.o : %.cpp
 	@echo =====\($(EXECUTABLE)\)====================== Building $<

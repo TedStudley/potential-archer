@@ -14,11 +14,11 @@ int main() {
           t         = 0.0;
   int     end_step  = END_TIME / k;
   Eigen::VectorXd heatVect (n);
-  squareWave (heatVect);
+  gaussPulse (heatVect);
   std::cout << heatVect.transpose() << std::endl;
-  for (int i = 0; i < 5; ++i, t += k) {
+  for (int i = 0; i < 512; ++i, t += k) {
     crankNicholson (heatVect, sigma);
-    frommVanLeer (heatVect, sigma);
+    //frommVanLeer (heatVect, sigma);
     std::cout << heatVect.transpose() << std::endl;
     t += k;
   }

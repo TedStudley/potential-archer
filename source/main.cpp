@@ -4,23 +4,29 @@
 #include <Simulation/Advection.h>
 #include <Simulation/Diffusion.h>
 
+#include <iomanip>
+
 int main() {
-	int n = GRID_SIZE;
-	double h 		= 1.0 / n,
-		   sigma 	= SIGMA,
-		   v		= VELOCITY,
-           k        = sigma * h / v;
-    int end_step    = END_TIME / k;
+	int     n = GRID_SIZE;
+	double  h = 1.0 / n,
+		      sigma = SIGMA,
+		      v	= VELOCITY,
+          k = sigma * h / v,
+          t = 0.0;
+  int end_step    = END_TIME / k;
 	Eigen::VectorXd heatVect(n);
 
 	squareWave(heatVect);
 
-	Eigen::VectorXd exactSoln = heatVect;
+  std::cout << heatVect.transpose() << std::endl;
+  for (int i = 0; i < 5; ++i) {
+  
+      crankNicholson(heatVect, sigma);
+//      frommVanLeer(heatVect, sigma);
+      std::cout << heatVect.transpose() << std::endl;
+      t += k;
+  }
 
-    frommVanLeer(heatVect, sigma);
-    crankNicholson(heatVect, sigma);
-
-	std::cout << heatVect << std::endl;
 
 	return 0;
 }

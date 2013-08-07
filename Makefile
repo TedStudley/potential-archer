@@ -14,9 +14,10 @@ STYLER			:= astyle
 STYLERFLAGS := --indent=spaces=2 --brackets=attach --indent-col1-comments        \
 							 --indent-preprocessor --delete-empty-lines --pad-oper             \
 							 --pad-paren-out --keep-one-line-statements --keep-one-line-blocks \
-							 --align-pointer=name --suffix=none --recursive --exclude=Eigen    \
-							 --verbose --formatted --lineend=linux
-
+							 --align-pointer=name --suffix=none --verbose --formatted --lineend=linux
+# Excluded files or directories
+SRCEXCLUDE	:=
+HDREXCLUDE	:= --exclude=Eigen
 
 # Source modules
 MODULES			:=  Simulation Geometry
@@ -66,4 +67,5 @@ clean:
 	@rm -rf $(BUILD_DIR)
 
 style:
-	@$(STYLER) $(STYLERFLAGS) "$(addsuffix /*.cpp,$(SRC_DIR))" "$(addsuffix /*.h,$(HDR_DIR))"
+	@$(STYLER) $(STYLERFLAGS) $(SRCEXCLUDE) --recursive "$(addsuffix /*.cpp,$(SRC_DIR))"
+	@$(STYLER) $(STYLERFLAGS) $(HDREXCLUDE) --recursive "$(addsuffix /*.h,$(HDR_DIR))"

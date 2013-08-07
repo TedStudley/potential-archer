@@ -1,28 +1,41 @@
 # C/C++ compiler
-CC			:=	g++
+CC					:=	g++
 # C/C++ compiler flags
-CFLAGS		+=	-Wall -c -Iinclude
+CFLAGS			+=	-Wall -c -Iinclude
 
 # C/C++ linker
-LD			:= 	g++
+LD					:= 	g++
 # C/C++ linker flags
-LDFLAGS		+=
+LDFLAGS			+=
+
+# Code reformatter
+STYLER			:= astyle
+# Code reformatter flags
+STYLERFLAGS := --indent=spaces=2 --brackets=attach --indent-col1-comments        \
+							 --indent-preprocessor --delete-empty-lines --pad-oper             \
+							 --pad-paren-out --keep-one-line-statements --keep-one-line-blocks \
+							 --align-pointer=name --suffix=none --recursive --exclude=Eigen    \
+							 --verbose --formatted --lineend=linux
 
 
 # Source modules
-MODULES		:=  Simulation Geometry
+MODULES			:=  Simulation Geometry
 # Build directory and target
-BUILD_DIR	:= 	build
+BUILD_DIR		:= 	build
 EXECUTABLE	:= 	archer
-TARGET		:= 	$(addprefix $(BUILD_DIR)/,$(EXECUTABLE))
+TARGET			:= 	$(addprefix $(BUILD_DIR)/,$(EXECUTABLE))
 # Source directory and files
-SRC_DIR		:=	source
-SRC_DIRS	:=	$(addprefix $(SRC_DIR)/,$(MODULES)) $(SRC_DIR)
-SOURCES		:=	$(foreach sdir,$(SRC_DIRS),$(wildcard $(sdir)/*.cpp))
+SRC_DIR			:=	source
+SRC_DIRS		:=	$(addprefix $(SRC_DIR)/,$(MODULES)) $(SRC_DIR)
+SOURCES			:=	$(foreach sdir,$(SRC_DIRS),$(wildcard $(sdir)/*.cpp))
 # Object directory and files
-OBJ_DIR		:= $(addprefix $(BUILD_DIR)/,obj)
-OBJ_DIRS	:= $(addprefix $(OBJ_DIR)/,$(MODULES))	$(OBJ_DIR)
-OBJECTS		:= $(foreach src,$(SOURCES),$(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(src)))
+OBJ_DIR			:= $(addprefix $(BUILD_DIR)/,obj)
+OBJ_DIRS		:= $(addprefix $(OBJ_DIR)/,$(MODULES))	$(OBJ_DIR)
+OBJECTS			:= $(foreach src,$(SOURCES),$(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(src)))
+# Header directory and files
+HDR_DIR			:= include
+HDR_DIRS		:= $(addprefix $(HDR_DIR)/,$(MODULES)) $(HDR_DIR)
+HEADERS			:= $(foreach hdir,$(HDR_DIRS),$(wildcard $(hdir)/*.h))
 
 vpath %.cpp	$(patsubst ' ',':',$(SRC_DIRS))
 vpath %.o	$(patsubst ' ',':',$(OBJ_DIRS))
@@ -32,7 +45,7 @@ $1/%.o %.cpp
 	$(CC) $(CFLAGS) -c $$< -o $$@
 endef
 
-.PHONY: all checkdirs clean
+.PHONY: all checkdirs clean style
 
 all: checkdirs $(TARGET)
 
@@ -51,3 +64,6 @@ $(BUILD_DIR) $(OBJ_DIRS):
 
 clean:
 	@rm -rf $(BUILD_DIR)
+
+style:
+	@$(STYLER) $(STYLERFLAGS) "$(addsuffix /*.cpp,$(SRC_DIR))" "$(addsuffix /*.h,$(HDR_DIR))"

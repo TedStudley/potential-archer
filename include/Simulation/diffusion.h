@@ -5,4 +5,4 @@
 
 using namespace Eigen;
 
-void crankNicholson (Ref<VectorXd>, const double);
+void crankNicholson (Ref<VectorXd>, const double, const double);

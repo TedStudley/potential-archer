@@ -1,15 +1,12 @@
-#include <Simulation/Advection.h>
+#include <Simulation/advection.h>
 
 // Multiple in-place upwind steps
 void upwind (Ref<VectorXd> tempVect, const double sigma, const int times) {
-  double fluxL, fluxR;
   int n = tempVect.rows();
-  for (int iteration = 0; iteration < times; ++iteration) {
+  for(int iteration = 0; iteration < times; ++iteration) {
     VectorXd oldVect = tempVect;
     for (int i = 0; i < n; ++i) {
-      fluxL = sigma * oldVect[mod (i - 1, n)];
-      fluxR = sigma * oldVect[i];
-      tempVect[i] = oldVect[i] + (fluxL - fluxR);
+      tempVect[i] = oldVect[i] + sigma * (oldVect[mod (i - 1, n)] - oldVect[i]);
     }
   }
 }

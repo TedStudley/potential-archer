@@ -46,12 +46,22 @@ inline void sineWave (Ref<VectorXd> tempVect) {
   }
 }
 
+inline void sineWave (Ref<VectorXd> tempVect, int k) {
+  int N = tempVect.rows() + 1;
+  double h = 1.0 / N,
+         x = h;
+  for (int i = 1; i < N; ++i) {
+    tempVect[i - 1] = sin (x * 2 * M_PI * k);
+    x += h;
+  }
+}
+
 inline void gaussPulse (Ref<VectorXd> tempVect) {
   int n = tempVect.rows();
   double h = 1.0 / n,
          x = 0.5 * h;
   for (int i = 0; i < n; ++i) {
-    tempVect[i] = exp (-256 * (x - 0.5) * (x - 0.5));
+    tempVect[i] = exp (-256 * (x - 0.5) * (x - 0.5) );
     x += h;
   }
 }

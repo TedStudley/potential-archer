@@ -10,17 +10,16 @@ int main() {
   double  h         = 1.0 / n,
           sigma     = SIGMA,
           v         = VELOCITY,
-          k         = sigma * h / v,
+          delta_t   = 0.25 * h,
           t         = 0.0;
-  int     end_step  = END_TIME / k;
-  Eigen::VectorXd heatVect (n);
-  gaussPulse (heatVect);
-  std::cout << heatVect.transpose() << std::endl;
-  for (int i = 0; i < 512; ++i, t += k) {
+  int     end_step  = END_TIME / delta_t;
+  Eigen::VectorXd heatVect (n - 1);
+  squareWave (heatVect);
+  for (int timestep = 0; timestep < 256 ; ++timestep) {
     crankNicholson (heatVect, sigma);
     //frommVanLeer (heatVect, sigma);
     std::cout << heatVect.transpose() << std::endl;
-    t += k;
+    t += delta_t;
   }
   return 0;
 }

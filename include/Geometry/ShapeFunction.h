@@ -7,11 +7,11 @@
 using namespace Eigen;
 
 inline void squareWave (Ref<VectorXd> tempVect) {
-  int n    = tempVect.rows();
+  int n    = tempVect.rows() + 1;
   double h = 1.0 / n,
          x = 0.5 * h;
-  for (int i = 0; i < n; ++i) {
-    tempVect[i] = (0.25 < x && x < 0.75) ? 1 : 0;
+  for (int i = 1; i < n; ++i) {
+    tempVect[i - 1] = (0.25 < x && x < 0.75) ? 1 : 0;
     x += h;
   }
 }
@@ -37,11 +37,11 @@ inline void triangleWave (Ref<VectorXd> tempVect) {
 }
 
 inline void sineWave (Ref<VectorXd> tempVect) {
-  int n = tempVect.rows();
-  double h = 1.0 / n,
-         x = 0.5 * h;
-  for (int i = 0; i < n; ++i) {
-    tempVect[i] = sin (x * 2 * M_PI);
+  int N = tempVect.rows() + 1;
+  double h = 1.0 / N,
+         x = h;
+  for (int i = 1; i < N; ++i) {
+    tempVect[i - 1] = sin (x * 2 * M_PI);
     x += h;
   }
 }

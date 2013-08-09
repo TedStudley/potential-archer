@@ -14,16 +14,14 @@ int main() {
   double  h         = 1.0 / n,
           sigma     = SIGMA,
           v         = VELOCITY,
-          delta_t   = 0.001 * h,
+          delta_t   = 0.01 * h,
           t         = 0.0;
   int     end_step  = END_TIME / delta_t;
-  firstPrint = secondPrint = thirdPrint = fourthPrint = true;
-  VectorXd heatVect (n - 1);
-  for (delta_t = 0.1 * h; delta_t > 0.00001 * h; delta_t *= 0.1) {
-    squareWave(heatVect);
-    crankNicholson (heatVect, sigma, delta_t);
-    cout << heatVect.transpose() << endl;
-  } 
-
-  return 0;
+  VectorXd vect1 (n - 1);  // 0.00001
+  sineWave (vect1);
+  for (int timestep = 0; timestep < 1024; ++timestep) {
+    crankNicholson (vect1, sigma, delta_t);
+    cout << vect1.transpose() << endl;
+  }
+    return 0;
 }

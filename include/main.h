@@ -4,8 +4,8 @@
 #include <Eigen/Core>
 
 // Simulation parameters!
-#define GRID_SIZE	  256
-#define SIGMA			  1.0
+#define GRID_SIZE	  1024
+#define SIGMA			  0.03125
 #define VELOCITY		3.0
-#define END_TIME		3.0
+#define END_TIME		0.25
 // Don't mess with anything below here.

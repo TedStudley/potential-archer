@@ -14,14 +14,19 @@ int main() {
   double  h         = 1.0 / n,
           sigma     = SIGMA,
           v         = VELOCITY,
-          delta_t   = 0.01 * h,
+          delta_t   = 0.25 * h,
           t         = 0.0;
   int     end_step  = END_TIME / delta_t;
-  VectorXd vect1 (n - 1);  // 0.00001
-  sineWave (vect1);
-  for (int timestep = 0; timestep < 1024; ++timestep) {
-    crankNicholson (vect1, sigma, delta_t);
-    cout << vect1.transpose() << endl;
+  VectorXd vect1 (n - 1), vect2 (n - 1), vect3 (n - 1);
+  VectorXd vect (n - 1);
+  sineWave (vect1, 1); sineWave (vect2, 7); sineWave (vect3, 17);
+  vect = vect1 + vect2 + vect3;
+  cout << vect.transpose() << endl;
+  for (int timestep = 0; timestep < end_step; ++timestep) {
+    upwind (vect, v, h, delta_t);
+    cout << vect.transpose() << endl;
+    cerr << "Timestep " << timestep << ": time = " << t << endl;
+    t += delta_t;
   }
-    return 0;
+  return 0;
 }

@@ -1,7 +1,7 @@
 # C/C++ compiler
 CC					:=	g++
 # C/C++ compiler flags
-CFLAGS			+=	-Wall -c -Iinclude
+CFLAGS			+=	-Wall -c -Iinclude -std=c++11
 
 # C/C++ linker
 LD					:= 	g++
@@ -20,7 +20,7 @@ SRCEXCLUDE	:=
 HDREXCLUDE	:= --exclude=Eigen
 
 # Source modules
-MODULES			:=  Simulation Geometry
+MODULES			:=  Simulation Geometry Output
 # Build directory and target
 BUILD_DIR		:= 	build
 EXECUTABLE	:= 	archer

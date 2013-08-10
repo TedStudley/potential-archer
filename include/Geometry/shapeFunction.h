@@ -7,7 +7,7 @@
 using namespace Eigen;
 
 inline void squareWave (Ref<VectorXd> tempVect) {
-  int n    = tempVect.rows() + 1;
+  int n    = tempVect.rows();
   double h = 1.0 / n,
          x = 0.5 * h;
   for (int i = 1; i < n; ++i) {

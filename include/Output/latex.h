@@ -10,14 +10,14 @@
 
 #include <vector>
 
-std::ofstream * startTexDoc (const std::string);
+std::ofstream *startTexDoc (const std::string);
 
-void makeTexTable (std::ofstream *, 
-                   const double, 
-                   const double, 
+void makeTexTable (std::ofstream *,
                    const double,
-                   void (*) (Ref<VectorXd>),
-                   void(*)(Ref<VectorXd>, const double));
+                   const double,
+                   const double,
+                   void ( *) (Ref<VectorXd>),
+                   void ( *) (Ref<VectorXd>, const double) );
 
 void endTexDoc (std::ofstream *);
 

@@ -8,7 +8,7 @@ using namespace Eigen;
 using namespace std;
 
 void crankNicholson (Ref<VectorXd> u, const double sigma, const double delta_t) {
-  int N = u.rows() + 1;
+  int N = u.rows();
   double h       = 1.0 / N,
          gamma = delta_t / (h * h);
   static FullPivLU<MatrixXd> decomp;
@@ -17,12 +17,12 @@ void crankNicholson (Ref<VectorXd> u, const double sigma, const double delta_t) 
   static MatrixXd C;
   static int oldN;
   if (oldN != N) {
-    A = MatrixXd::Zero (N - 1, N - 1);
-    A.diagonal (-1) = VectorXd::Constant (N - 2, -1);
-    A.diagonal() = VectorXd::Constant (N - 1, 2);
-    A.diagonal (1) = VectorXd::Constant (N - 2, -1);
-    B = MatrixXd::Identity (N - 1, N - 1) + (gamma * 0.5 * A);
-    C = MatrixXd::Identity (N - 1, N - 1) - (gamma * 0.5 * A);
+    A = MatrixXd::Zero (N, N);
+    A.diagonal (-1) = VectorXd::Constant (N - 1, -1);
+    A.diagonal() = VectorXd::Constant (N, 2);
+    A.diagonal (1) = VectorXd::Constant (N - 1, -1);
+    B = MatrixXd::Identity (N, N) + (gamma * 0.5 * A);
+    C = MatrixXd::Identity (N, N) - (gamma * 0.5 * A);
     oldN = N;
     decomp.compute (B);
   }
@@ -46,6 +46,7 @@ void crankNicholson (Ref<VectorXd> u, const double sigma, const double delta_t) 
     x += alpha * p;
     r -= alpha * q;
     rho2 = rho1;
+    std::cerr << "Iteration " << i << ": r.norm() = " << r.norm() << endl;
     if (r.norm() < 0.0000001) {
       std::cerr << "CG converged after " << i << " iterations." << std::endl;
       break;

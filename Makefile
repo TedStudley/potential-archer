@@ -1,7 +1,7 @@
 # C/C++ compiler
 CC					:=	g++
 # C/C++ compiler flags
-CFLAGS			+=	-Wall -c -Iinclude -std=c++11
+CFLAGS			+=	-Wall -c -Iinclude -fopenmp -std=c++11
 
 # C/C++ linker
 LD					:= 	g++

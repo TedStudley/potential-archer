@@ -48,6 +48,8 @@ int main() {
   double  sigma     = SIGMA,
           v         = VELOCITY,
           end_time  = END_TIME;
+// TeX document
+/*   
   std::ofstream *docStream = startTexDoc ("Tables.tex");
   for (unsigned int shapeN = 0; shapeN < shapeFnString.size(); ++shapeN) {
     (*docStream) << "\t\\section{" << shapeFnString[shapeN] << "}" << std::endl;
@@ -60,5 +62,46 @@ int main() {
     }
   }
   endTexDoc (docStream);
+*/
+
+// Standard solution one-timestep output
+/*
+  VectorXd tempVect (2048);
+  fourierSquare (tempVect);
+  std::cout << tempVect.transpose() << std::endl;
+*/
+
+// Diffusion solver
+
+  int    N = 1024;
+  double h = 1.0 / N,
+         delta_t = 0.0001 * h;;
+  bool first, second, third, fourth, fifth;
+  first = second = third = fourth = fifth = 1;
+
+  VectorXd tempVect (N);
+  squareWave (tempVect);
+
+  for (int i = 0; fifth; ++i) {
+    if (first) {
+      first = false;
+      std::cout << tempVect.transpose() << std::endl;
+    } else if (second && tempVect.maxCoeff() <= 0.8) {
+      second = false;
+      std::cout << tempVect.transpose() << std::endl;
+    } else if (third && tempVect.maxCoeff() <= 0.6) {
+      third = false;
+      std::cout << tempVect.transpose() << std::endl;
+    } else if (fourth && tempVect.maxCoeff() <= 0.5) {
+      fourth = false;
+      std::cout << tempVect.transpose() << std::endl;
+    } else if (fifth && tempVect.maxCoeff() <= 0.25) {
+      fifth = false;
+      std::cout << tempVect.transpose() << std::endl;
+    }
+    crankNicholson (tempVect, sigma, delta_t);
+  }
+
+
   return 0;
 }

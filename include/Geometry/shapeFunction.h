@@ -20,7 +20,8 @@ inline void fourierSquare (Ref<VectorXd> tempVect) {
   int N    = tempVect.rows(),
       m    = N / 10;
   double h = 1.0 / N,
-         x = 0.5 * h;
+         x = 0.5 * h,
+         t = 0.000075;
   VectorXd bk (m);
   for (int k = 0; k < m; ++k)
     bk [k] = 2.0 * (std::cos ((k + 1) * M_PI / 4) - std::cos (3 * (k + 1) * M_PI / 4)) / ((k + 1) * M_PI);
@@ -28,7 +29,7 @@ inline void fourierSquare (Ref<VectorXd> tempVect) {
     tempVect[j] = 0;
     x = j * h + 0.5 * h;
     for (int k = 0; k < m; ++k) {
-      tempVect[j] += bk[k] * std::sin ((k + 1) * M_PI * x);
+      tempVect[j] += bk[k] * std::exp (-(k + 1) * (k + 1) * t * M_PI) * std::sin ((k + 1) * M_PI * x);
     }
   }
 }

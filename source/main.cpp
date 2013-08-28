@@ -45,9 +45,9 @@ methodFnString {"Upwind Method",
                 "Fromm Van Leer Method"
                };
 int main() {
-  double  sigma     = SIGMA,
-          v         = VELOCITY,
-          end_time  = END_TIME;
+  double  sigma     = SIGMA;
+//          v         = VELOCITY,
+//          end_time  = END_TIME;
 // TeX document
 /*   
   std::ofstream *docStream = startTexDoc ("Tables.tex");
@@ -65,17 +65,21 @@ int main() {
 */
 
 // Standard solution one-timestep output
-/*
-  VectorXd tempVect (2048);
-  fourierSquare (tempVect);
+  int N = 4096;
+  VectorXd tempVect (N);
+  squareWave (tempVect);
   std::cout << tempVect.transpose() << std::endl;
-*/
+  squareWave (tempVect);
+  std::cout << tempVect.transpose() << std::endl;
+  frommVanLeer (tempVect, sigma, 27 * N / sigma);
+  std::cout << tempVect.transpose() << std::endl;
+
 
 // Diffusion solver
-
+/*
   int    N = 1024;
   double h = 1.0 / N,
-         delta_t = 0.0001 * h;;
+         delta_t = 0.01 * h;;
   bool first, second, third, fourth, fifth;
   first = second = third = fourth = fifth = 1;
 
@@ -101,7 +105,7 @@ int main() {
     }
     crankNicholson (tempVect, sigma, delta_t);
   }
-
+*/
 
   return 0;
 }
